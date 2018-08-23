@@ -10,7 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import entity.UserEntity;
+import entity.GifEntity;
+
 import model.User;
+import model.Gif;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +28,7 @@ public class UserLoginDAOImpl implements UserLoginDAO{
 	public User authenticate(String username, String password) throws Exception {
 		Session session = null;
 		List<Gif> gifs  = null;
-		
+		User user = null;
 		session = sessionFactory.getCurrentSession();	
 		
 		// get the username associated user details out of the database
@@ -33,7 +36,7 @@ public class UserLoginDAOImpl implements UserLoginDAO{
 		
 		//TODO I am actually not sure we need to make a new user
 		// if we found any, AND the passwd is correct, make a new user object
-		if (userEntity != null && userEntity.getPassword.equals(oldPassword)) {
+		if (userEntity != null && userEntity.getPassword().equals(password)) {
 			user = new User();
 			user.setUsername(userEntity.getUsername());
 			user.setEmail(userEntity.getEmail());
@@ -79,7 +82,7 @@ public class UserLoginDAOImpl implements UserLoginDAO{
 		UserEntity userEntity = (UserEntity) session.get(UserEntity.class, username);
 		
 		// if we found any, check the password and update if correct
-		if (userEntity != null && userEntity.getPassword.equals(oldPassword)) {
+		if (userEntity != null && userEntity.getPassword().equals(oldPassword)) {
 			// it should auto persist!
 			userEntity.setPassword(newPassword);
 			return true;
@@ -95,7 +98,7 @@ public class UserLoginDAOImpl implements UserLoginDAO{
 		UserEntity ue = new UserEntity();
 		//TODO Do we need to check for uniqueness
 		ue.setEmail(user.getEmail());
-		ue.setUserName(user.getUsername());
+		ue.setUsername(user.getUsername());
 		ue.setPassword(user.getPassword());
 		
 		String value = (String) session.save(ue);
@@ -114,11 +117,11 @@ public class UserLoginDAOImpl implements UserLoginDAO{
 			GifEntity ge = new GifEntity();
 			ge.setUrl(url);
 			ge.setTags(url);
-			ge.setUser(userEntity); // Not sure how this will work, I think it still works
-			return true;
+			ge.setUsername(username); // Not sure how this will work, I think it still works
+			return "Success";
 		}
 		//TODO we may want to return the circumstances surrounding the failure
-		return false;
+		return null;
 	}
 
 	@Override
@@ -147,7 +150,6 @@ public class UserLoginDAOImpl implements UserLoginDAO{
 	@Override
 	public List<Gif> getUserGifs(String username) throws Exception {
 		Session session = sessionFactory.getCurrentSession();		
-		UserEntity userEntity = (UserEntity) session.get(UserEntity.class, username);
 		List<Gif> gifs = null;
 				
 		// Use criteria builder to get all the Gifs that are associated with this username

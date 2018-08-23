@@ -11,7 +11,7 @@ public interface UserLoginDAO {
 	
 	public String register(User user) throws Exception;
 
-	public String changePassword(String username, String oldPassword, String newPassword) throws Exception;
+	public boolean changePassword(String username, String oldPassword, String newPassword) throws Exception;
 	
 	public String addGif(String username, String url, String tags) throws Exception;
 	
