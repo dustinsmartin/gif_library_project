@@ -11,7 +11,7 @@ import dao.UserLoginDAO;
 import model.Gif;
 import model.User;
 
-@Service
+@Service("userLoginService")
 @Transactional(readOnly=true)
 public class UserLoginServiceImpl implements UserLoginService {
 

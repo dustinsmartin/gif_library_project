@@ -29,6 +29,8 @@ public class UserLoginDAOImpl implements UserLoginDAO{
 		Session session = null;
 		List<Gif> gifs  = null;
 		User user = null;
+		
+		System.out.println(username +" "+ password);
 		session = sessionFactory.getCurrentSession();	
 		
 		// get the username associated user details out of the database
@@ -48,7 +50,7 @@ public class UserLoginDAOImpl implements UserLoginDAO{
 			Root<GifEntity> root = criteriaQuery.from(GifEntity.class);
 			criteriaQuery.select(root);
 			
-			criteriaQuery.where(builder.equal(root.get("username"), username));
+			criteriaQuery.where(builder.equal(root.get("user"), username));
 			List<GifEntity> gifEntityList = session.createQuery(criteriaQuery).list();
 			
 			// if there are gifEntities in the list, make new gifs from them, and
@@ -117,7 +119,7 @@ public class UserLoginDAOImpl implements UserLoginDAO{
 			GifEntity ge = new GifEntity();
 			ge.setUrl(url);
 			ge.setTags(url);
-			ge.setUsername(username); // Not sure how this will work, I think it still works
+			ge.setUsername(userEntity); // Not sure how this will work, I think it still works
 			return "Success";
 		}
 		//TODO we may want to return the circumstances surrounding the failure

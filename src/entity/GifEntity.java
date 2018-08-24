@@ -27,8 +27,8 @@ public class GifEntity {
 	@Column(name = "tag")
 	private String tags;
 	@OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "username")
-	private String username;
+    @JoinColumn(name = "userName", unique=true)
+	private UserEntity user;
 	
 	
 	public Integer getGifId() {
@@ -49,11 +49,11 @@ public class GifEntity {
 	public void setTags(String tags) {
 		this.tags = tags;
 	}
-	public String getUsername() {
-		return username;
+	public UserEntity getUser() {
+		return user;
 	}
-	public void setUsername(String username) {
-		this.username = username;
+	public void setUsername(UserEntity user) {
+		this.user = user;
 	}
 	
 	
